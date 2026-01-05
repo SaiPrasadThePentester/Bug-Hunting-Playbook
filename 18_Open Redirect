@@ -1,0 +1,48 @@
+Open Redirect is a vulnerability where a web application redirects users to an untrusted external URL based on user-controlled input without proper validation.
+
+                                    
+                                                                                        
+                                                                                         Parameters to Test
+                                                                                         
+url, redirect, redirect_uri, redirect_url, redirect_to, redir, rurl, destination, dest, go, to, u,next, next_page, return, returnTo, return_to, return_url, return_path, continue, continue_url, checkout_url,page, page_url, view, view_url, file, file_url, file_name, folder, folder_url, load_url, load_file, img_url, image_url, login_url, turl, link, target, path, del, ink,/redirect/, /cgi-bin/redirect.cgi, /out/, /out?, /login?to=, /go=, /return=, /returnTo=, /return_to=, /continue=, /checkout_url=, /return_path=, /image_url=, /loginto
+
+
+                                                                                          
+                                                                                             Testing Example
+
+https://example.com/login?redirect=https://evil.com
+
+
+                             
+                                                                                                  CVSS
+CVSS v3.x: 5.4 – 6.1
+Severity: Medium
+Priority: P3
+
+
+
+                                                                                                 Impact
+
+If an Open Redirect vulnerability exists, an attacker can:
+🎣 Perform phishing attacks using a trusted domain
+🔐 Steal user credentials or session tokens
+🔁 Abuse OAuth / SSO login flows
+🦠 Redirect users to malicious or malware sites
+📉 Damage brand trust and reputation
+
+
+
+
+                                                                                               Remediation
+
+✅ Implement allowlist-based redirection (trusted domains/paths only)
+❌ Do not redirect to user-supplied full URLs
+🔒 Use relative paths instead of absolute URLs
+🔍 Validate and sanitize redirect parameters
+🧾 Sign or encode redirect values (HMAC/JWT)
+🚫 Reject unknown or external redirect destinations
+
+
+
+                                                                                       
+                                                                                         
