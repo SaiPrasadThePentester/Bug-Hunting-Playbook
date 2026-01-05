@@ -1,0 +1,97 @@
+SSRF (Server-Side Request Forgery) is a web security vulnerability where an attacker tricks a server into making HTTP requests to arbitrary domains or IP addresses,This can include internal services that are not accessible from the internet, such as localhost, internal APIs, cloud metadata services, or admin panels.
+
+
+                                                                                             
+                                                                                             Types of SSRF
+
+1.Regular SSRF
+Server response is visible to the attacker
+
+2.Blind SSRF
+No direct response
+Exploitation confirmed via out-of-band (OAST) interactions
+
+
+                                                                                           Common SSRF Parameters
+
+Attackers typically test parameters like: dest, callback, id, file, page, url, uri, path, root, site, referrer, continue, window, reference,redirect, data, html    
+
+
+
+                                                                                             Practical SSRF Testing
+
+    🔹 Step 1: Intercept Request
+Open Burp Suite
+Proxy → Intercept ON
+Perform the functionality that loads external content (image, PDF, webhook, fetch, etc.)
+Capture the request
+
+🔹 Step 2: Inject External Listener (Blind SSRF)
+
+Use Pipedream / Burp Collaborator
+Inject the listener URL into parameters
+Example: GET /fetch?url=https://<unique>.pipedream.net
+📌 If a hit appears on Pipedream → SSRF confirmed
+
+🔹 Step 3: Internal Network Testing
+Common payloads:
+http://localhost:80
+http://localhost:22
+https://localhost:443
+http://127.0.0.1:80
+http://127.0.0.1:22
+https://127.0.0.1:443
+http://0.0.0.0:80
+http://0.0.0.0:22
+https://0.0.0.0:443
+http://[::]:80/                      
+
+
+
+
+                                                                                                  CVSS Score
+
+
+CVSS v3.x: 8.0 – 9.8
+Severity:P1/P2
+
+
+
+                                                                                                   Impact
+
+If SSRF is exploited, an attacker can:
+🏠 Access internal services (localhost, internal APIs)
+🔐 Steal cloud metadata credentials
+🧭 Perform internal port scanning
+📂 Read internal files (in some cases)
+🔁 Bypass firewall & network restrictions
+☁️ Compromise cloud infrastructure
+
+
+                                                                                                   Remediation
+✅ 1. Input Validation & Allowlisting
+Only allow trusted domains
+Block:
+localhost
+Private IP ranges
+Internal DNS names
+
+✅ 2. Network-Level Protections
+Block outbound access to:
+127.0.0.1
+169.254.169.254
+Internal IP ranges
+Use firewall / proxy rules
+
+✅ 3. Disable Unnecessary URL Fetching
+Avoid server-side URL fetch unless required
+
+✅ 4. Use DNS & IP Resolution Checks
+Validate resolved IP, not just hostname
+Prevent DNS rebinding
+
+✅ 5. Logging & Monitoring
+Monitor outbound requests
+Alert on suspicious destinations
+
+
