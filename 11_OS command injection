@@ -1,0 +1,104 @@
+                                                                                        
+                                                                                         OS command injection 
+                                                                                         
+•	Command Injection is a critical security vulnerability that occurs when an attacker is able to inject and execute arbitrary system commands on the host operating system via a vulnerable application. It is part of the broader category of injection attacks, like SQL injection or LDAP injection.
+
+
+                                                                              
+                                                                                     Types of Command Injection
+
+1. Verbose Command Injection
+•	The attacker directly sees the output of the executed system command in the application's response.
+
+2. Blind Command Injection
+•	The command is executed, but the output is not shown to the attacker. Instead, they deduce success/failure or output based on side effects.
+
+Techniques for exploitation:
+•	Time delays: Use sleep, ping, or similar commands to infer execution (e.g., 127.0.0.1 && sleep 10)
+•	Out-of-band (OOB) interaction: Use tools like Burp Collaborator, dnslog, or custom scripts to monitor external systems (e.g., DNS or HTTP requests).
+•	Response content or size: A change in the page's behavior may indicate successful command execution.
+
+
+Payload’s For command Injection: https://github.com/payloadbox/command-injection-payload-list
+•	Payloads vary depending on the target operating system.
+; ls -la
+|hostname 
+||whoami
+&hostname
+;netstat -antp
+;cat /etc/passwd
+|cat /etc/group
+
+Common Parameters to test : https://1drv.ms/w/c/0929e0a398c9d676/EW1StcgFAPpIs67i80yssVcBWfmW0zmuEINHJskV8tuB-w?e=AE8dsI
+
+
+                                                                                          
+                                                                                           Steps to reproduce
+
+
+http://example.com/cmd.php?cmd=whoami 
+http://example.com/cmd.php?cmd=; whoami
+http://example.com/cmd.php?cmd=| whoami
+http://example.com/cmd.php?cmd=& whoami
+http://example.com/cmd.php?cmd=sysinfo
+http://example.com/cmd.php?cmd=ls
+http://example.com/cmd.php?cmd=; ls
+http://example.com/cmd.php?cmd=dir etc…
+
+
+
+                                                                                         CVSS & Priority
+
+CVSS v3.x: 9.8 (Critical)
+P1 – Critical ✅
+
+
+
+
+
+                                                                                            Impact
+
+If an OS Command Injection exists, an attacker can:
+
+🚨 Execute arbitrary system commands on the server
+📂 Read, modify, or delete sensitive files (e.g., /etc/passwd, config files)
+🔐 Steal credentials, API keys, and environment secrets
+🐚 Obtain reverse shell / full server takeover (RCE)
+🦠 Install backdoors, malware, or crypto-miners
+❌ Cause Denial of Service (DoS) by killing services or exhausting resources
+🌐 Pivot to internal systems in the network
+
+
+                                                                                           Remediation
+
+
+✅ 1. Avoid OS Command Execution
+Do not use system calls (system(), exec(), Runtime.exec(), os.system()) if not required
+Use safe built-in APIs or libraries instead
+
+✅ 2. Strict Input Validation
+Apply allowlist (whitelisting) for user input
+Reject special characters: ; | & && || ` $ ( )
+
+✅ 3. Parameterized Command Execution
+If command execution is unavoidable:
+Use argument arrays instead of concatenated strings
+Example (safe): Runtime.getRuntime().exec(new String[]{"ping", "-c", "4", userInput});
+
+✅ 4. Least Privilege
+Run applications with minimum OS permissions
+Never run web apps as root/admin
+
+✅ 5. OS & Application Hardening
+Disable dangerous binaries (wget, curl, nc, bash) if not required
+Use AppArmor / SELinux policies
+
+✅ 6. Monitoring & Detection
+Enable command execution logging
+Deploy WAF rules to detect command injection patterns
+Monitor for unexpected child processes                                                     
+
+
+
+
+
