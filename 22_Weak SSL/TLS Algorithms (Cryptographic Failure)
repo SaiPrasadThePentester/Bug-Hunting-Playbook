@@ -1,0 +1,47 @@
+Weak or insecure SSL/TLS algorithms can expose encrypted communication to attacks such as downgrade attacks, data interception, or cryptographic breaks. To identify such issues, automated SSL/TLS analysis was performed.
+
+                                          
+                                                                                    
+                                                                                           Tool Setup & Usage
+
+
+The testssl.sh tool was downloaded using: git clone https://github.com/testssl/testssl.sh.git
+
+Execute permission was given to the script: nchmod +x testssl.sh
+
+The SSL/TLS scan was performed using: ./testssl.sh nasa.gov
+
+
+* The tool will display vulnerabilitie if any weak or insecure SSL/TLS algorithms are present.
+
+
+
+                                                                                                CVSS
+
+CVSS v3.x: 5.3 – 7.4
+Severity: Medium
+Priority: P3
+
+
+
+                                                                                                Impact
+
+
+If weak or insecure SSL/TLS algorithms are enabled, an attacker may:
+
+Intercept and decrypt encrypted traffic
+Perform Man-in-the-Middle (MITM) attacks
+Exploit protocol downgrade weaknesses
+Access sensitive user or application data
+
+
+
+                                                                                                Remediation
+
+
+Disable deprecated protocols: SSLv2, SSLv3, TLS 1.0, TLS 1.1
+Enforce TLS 1.2 or TLS 1.3
+Remove weak cipher suites: RC4, DES, 3DES, MD5
+Use strong encryption: AES-GCM, ChaCha20-Poly1305
+Ensure certificates use SHA-256 or stronger
+Regularly audit SSL/TLS settings using security tools
