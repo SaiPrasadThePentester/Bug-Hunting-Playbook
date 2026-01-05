@@ -1,0 +1,89 @@
+Price Tampering is a web application vulnerability where an attacker manipulates price, quantity, or total amount parameters during a purchase flow,This occurs due to missing or weak server-side validation, allowing attackers to buy products or services at a lower price or for free.
+
+
+                                                                 
+                                                                         Practical Exploitation Using Burp Suite
+
+
+1️⃣ Intercept the Purchase Request
+Open Burp Suite
+Proxy → Intercept ON
+Add a product to the cart
+Proceed to checkout
+Capture the HTTP request
+
+2️⃣ Modify the Price Parameter
+🔍 Original Request:
+POST /checkout HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+  "product_id": "123",
+  "price": "100",
+  "quantity": "1"
+}
+
+
+🧪 Modified Request:
+{
+  "product_id": "123",
+  "price": "1",
+  "quantity": "1"
+}
+
+3️⃣ Forward the Request
+Click Forward
+Send the modified request to the server
+
+4️⃣ Check the Response
+If the order is processed at ₹1 instead of ₹100
+
+✅ Price Tampering vulnerability confirmed
+
+
+
+                                                                                             CVSS Score
+
+
+CVSS v3.x: 7.5 – 8.6
+Severity: High
+
+
+                                                                                               Impact
+
+
+If exploited, an attacker can:
+🛒 Purchase products at arbitrary prices
+💸 Cause direct financial loss
+🎟️ Obtain premium services for free
+🔁 Automate mass fraudulent purchases
+🧾 Break business logic and accounting
+⚠️ Damage brand trust and compliance
+
+
+
+                                                                                           Remediation
+
+
+✅ 1. Server-Side Price Validation (Most Important)
+Never trust client-side values
+Fetch price only from database
+Recalculate total on server
+
+✅ 2. Use Product IDs, Not Prices
+❌ Client sends price
+✅ Client sends product_id → server fetches price
+
+✅ 3. Protect APIs
+Validate: price,quantity,discounts,coupons
+Reject negative or decimal manipulation
+
+✅ 4. Use Signed / Encrypted Tokens
+HMAC or JWT-based order tokens
+Prevent tampering of critical fields
+
+✅ 5. Logging & Monitoring
+Detect:Price mismatch attempts
+       Repeated abnormal values
+       Alert on fraud patterns
