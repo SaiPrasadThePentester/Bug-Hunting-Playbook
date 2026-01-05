@@ -1,0 +1,95 @@
+
+IDOR is a vulnerability where an application exposes internal object references (like user IDs, file IDs, order numbers) and fails to properly check authorization, allowing attackers to access or modify other users’ data.
+
+                          
+                                                                                            Easy Example
+
+GET /profile?id=1001   ← your account
+GET /profile?id=1002   ← another user
+
+Parameter To Test:Id,gid,pip,uid,uuid,user,username,file,file name,dest
+
+
+                                                                                    
+                                                                                     IDOR testing guide using Burp Suite
+
+Account Editing Time (Profile Update):
+🔍 Intercepted Request:
+POST /api/user/update
+{
+  "user_id": "1001",
+  "email": "test@mail.com"
+}
+
+🧪 Test:
+Change user_id=1001 → 1002
+Send request via Repeater
+
+🚨Vulnerable If :Profile of another user gets updated.
+
+
+
+                                                                                             CVSS Score
+
+
+CVSS v3.x: 7.5 – 8.6
+Severity: High
+
+
+
+
+                                                                                               Impact
+
+If IDOR exists, an attacker can:
+👤 Access other users’ profiles & personal data
+📦 View order history and invoices
+🔑 Change passwords of other users
+🛒 Add/remove products from another user’s cart
+❌ Cancel or manipulate orders
+💬 Read private messages or chat history
+💸 Cause financial loss and data privacy violations
+
+
+
+                                                                                             Remediation
+✅ 1. Enforce Server-Side Authorization
+Always validate:Does this user own this object?
+               never rely on client-side checks
+
+
+✅ 2. Use Indirect Object References
+
+Avoid exposing real IDs:
+❌ /invoice?id=1023
+✅ /invoice?id=8f3d9c_token
+
+
+✅ 3. Access Control Checks on Every Request
+
+Apply authorization for:
+Profile edit
+Order history
+Password change
+Invoice access
+Cart actions
+Chat/messages
+
+
+✅ 4. Role-Based Access Control (RBAC)
+Ensure: Users → only their own data
+        Admins → admin-only objects
+
+
+✅ 5. Logging & Monitoring
+Log unauthorized access attempts
+Alert on ID manipulation patterns
+
+
+
+
+
+
+
+
+
+
