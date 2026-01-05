@@ -1,0 +1,74 @@
+WPScan is a command-line security scanner used to identify known vulnerabilities in WordPress core, themes, and plugins,It relies on an up-to-date vulnerability database maintained by the WPScan team.
+
+Usage :
+wpscan --url https://yourwebsite.com -e vp --api-token YOUR_TOKEN
+wpscan --url https://yourwebsite.com -e vt --api-token YOUR_TOKEN
+
+-e vp → Vulnerable plugins only
+-e vt → Vulnerable themes only
+
+
+                                                                                    
+                                                                                         API Token
+                                                                                       
+Register at wpscan.com to get a free API token, which enables: Accurate vulnerability detection
+                                                                CVE details
+                                                                Severity information
+
+
+                                                              
+                                                                                         
+                                                                                          CVSS
+
+CVSS v3.x Range: 6.1 – 9.8
+Severity: Medium to Critical
+
+
+                                                                                                Impact
+
+
+If WordPress vulnerabilities are exploited, an attacker can:
+🐚 Achieve remote code execution via vulnerable plugins/themes
+🔐 Take over admin accounts
+📂 Upload malicious files / web shells
+🦠 Inject malware, SEO spam, redirects
+🗄️ Steal user data, credentials, database contents
+❌ Deface the website or cause service disruption
+🌐 Use the site to attack visitors or other systems
+
+
+
+                                                                                                Remediation
+
+✅ 1. Keep Everything Updated
+Update WordPress core
+Update themes and plugins
+Remove unused or abandoned plugins
+
+✅ 2. Remove Vulnerable Components
+Immediately disable or delete:
+Plugins/themes flagged as vulnerable
+End-of-life components
+
+✅ 3. Enforce Strong Access Controls
+Strong admin passwords
+Enable 2FA
+Limit admin users
+Change default /wp-admin access rules
+
+✅ 4. File & Server Hardening
+Disable PHP execution in /uploads
+Correct file permissions
+Protect wp-config.php
+Use .htaccess or server rules
+
+✅ 5. Security Monitoring
+Use a WAF
+Monitor logs for suspicious activity
+Regularly scan with WPScan
+
+✅ 6. Backup & Recovery
+Maintain regular backups
+Test restore procedures
+
+
