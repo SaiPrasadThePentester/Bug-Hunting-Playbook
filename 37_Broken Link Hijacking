@@ -36,16 +36,32 @@ How the Attack Happens :
 ➡️ Social Media Takeover achieved
 
 
+
+
+                                                                                  Automatic tool
+
+
+ 
+#apt install npm
+ npm install broken-link-checker -g
+ broken-link-checker https://dishtv.in -ro
+
+
+Automatically scans a website, Identifies: Broken external links & Dead internal links & 404 / 5xx responses
+
        
         
-                                                                                        CVSS Score
-\
+                                                                                        
+                                                                                     CVSS Score
+
+
 CVSS v3.1 Base Score: 6.5 – Medium | P3 
 
 
 
 
                                                                                          Impact
+
 
 If a social media link is hijacked, an attacker can:
 Impersonate the brand using a trusted website link
