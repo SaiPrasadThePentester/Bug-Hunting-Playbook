@@ -1,0 +1,77 @@
+Subdomain takeover occurs when a subdomain points to an external third-party service (such as cloud hosting or SaaS platforms), but that service is no longer active or properly configured,Even though the DNS record still exists, the actual resource it points to has been deleted or released. This allows an attacker to claim the abandoned resource and take control of the subdomain.
+
+
+
+
+                                                                               Steps To Reproduce
+
+
+1️⃣ Check if Subdomain Points to a Third-Party Service (CNAME)
+Using dig: dig subdomain.example.com CNAME
+
+Vulnerable Sign:
+Output shows a third-party service domain, for example: subdomain.example.com.  CNAME  example.azurewebsites.net.
+
+
+
+2️⃣ Verify Using nslookup 
+#nslookup subdomain.example.com
+
+Look for Service-specific domains like: github.io
+                                       azurewebsites.net
+                                        amazonaws.com
+                                      herokuapp.com
+                                      cloudfront.net
+
+
+➡️ This confirms the subdomain depends on an external service.
+
+
+
+                                                               
+                                                                                          Confirm Takeover Possibility
+
+                                                      
+Check the service name against the takeover reference list: https://github.com/EdOverflow/can-i-take-over-xyz
+
+
+
+What to Verify: Service name exists in the list
+                Status shows Vulnerable / Takeover Possible
+
+
+
+
+                                                                                                   CVSS
+
+  
+   CVSS v3.1 Base Score: 9.6 – Critical | P1
+
+
+
+                                                                                                  Impact
+
+
+If a subdomain takeover is exploited, an attacker can:
+Fully control a trusted subdomain
+Host phishing pages under a legitimate domain
+Steal user credentials and session data
+Serve malware or malicious downloads
+Bypass user trust due to:
+Valid HTTPS
+Organization-owned domain
+Damage brand reputation
+Chain attacks (OAuth abuse, cookie theft, XSS hosting)
+
+
+                                                                                              Remediation
+
+
+
+Remove the dangling DNS record (CNAME / A record)
+Reclaim the resource on the third-party service immediately
+
+
+
+
+   
