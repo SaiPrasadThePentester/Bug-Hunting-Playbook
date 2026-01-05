@@ -1,0 +1,17 @@
+https://crt.sh/
+https://www.virustotal.com/gui/home/search { Relation > sub domain }
+https://searchdns.netcraft.com/
+https://chaos.projectdiscovery.io/
+https://subdomainfinder.c99.nl/
+Site:dishtv.in
+
+#sublist3r
+Sudo apt install sublist3r
+sublist3r -d domain
+
+#amass
+amass enum -d domainname
+
+
+#sudo apt install subfinder
+Subfinder -d domainname -o filename
