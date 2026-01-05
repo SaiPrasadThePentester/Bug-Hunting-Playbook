@@ -1,0 +1,55 @@
+•	Zone Transfer Misconfiguration occurs when a DNS server allows unauthorized zone transfers (AXFR/IXFR), enabling anyone to download the entire DNS zone file of a domain.
+
+
+                                                                                        Testing
+
+
+dig dishtv.in +short ns
+dig axfr @servername dishtv.in
+
+
+NOTE: If a DNS AXFR (zone transfer) request returns any domain data, it indicates a DNS zone transfer misconfiguration and is considered a vulnerability.
+
+
+
+                                                                                        CVSS Score
+
+
+CVSS v3.1 Base Score: 6.5
+Priority : P3 (Medium)
+
+
+                                     
+                                                                                          Impact
+
+
+If DNS zone transfer is allowed to unauthorized users, attackers can:
+
+1.Enumerate all subdomains
+
+2.Identify: Internal systems
+          Mail servers
+         Dev / staging environments
+
+3.Expand attack surface for: Web attacks
+                        Network attacks
+                        Phishing
+
+4.Gain valuable reconnaissance data for further exploitation
+
+
+
+
+                                                                                         Remediation
+
+
+
+1.Disable AXFR for public/unauthorized clients
+2.Restrict zone transfers to trusted secondary DNS servers only (by IP)
+3.Enforce ACL rules on DNS servers
+4.Use TSIG keys for authenticated zone transfers
+5.Regularly audit DNS configuration
+
+Example: Allow AXFR only between: Primary DNS → Secondary DNS
+         Deny AXFR from: Internet,Unknown IPs
+                                                                                       
