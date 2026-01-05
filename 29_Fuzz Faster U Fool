@@ -1,0 +1,15 @@
+ffuf (Fuzz Faster U Fool) is a fast web fuzzing tool used to discover hidden and unlisted resources by sending automated HTTP requests.
+
+1.Subdomain
+2.Directorys & Files
+3.API Endpoint Discovery etc..
+
+
+ffuf -c -u https://FUZZ.dishtv.in -w file.txt -mc 200 -rate 100
+
+
+word lists Files:
+https://github.com/theMiddleBlue/DNSenum/tree/master/wordlist
+https://github.com/n0kovo/n0kovo_subdomains
+https://github.com/danielmiessler/SecLists/tree/master/Discovery/DNS
+
