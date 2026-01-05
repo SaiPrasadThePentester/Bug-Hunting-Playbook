@@ -1,0 +1,54 @@
+A JWT (JSON Web Token) vulnerability was identified where the application failed to properly validate the JWT signature or used a weak signing algorithm, allowing token tampering and unauthorized access.
+
+
+                                                                                              
+                                                                                          Testing Methodology
+
+
+
+1.A login request containing username and password was intercepted using an interception proxy.
+2.After forwarding the request, the server responded with a JWT token in the:
+3.Authorization header / Cookie / Response body.
+4.The JWT token was copied and decoded using an online JWT decoder (e.g., jwt.io, jwt.one).
+5.The decoded token revealed sensitive claims, including: user_id , email, role
+6.The application did not properly validate the JWT signature or relied on a weak signing algorithm.
+7.The email or user_id value inside the token was modified.
+8.A new token was generated and replaced in the request header.
+9.The modified request was forwarded to the server.
+10The server accepted the tampered JWT and granted access to another user’s account.
+
+
+
+                                                                                            CVSS
+
+CVSS v3.x: 8.8 – 9.8
+Severity: High to Critical
+Priority: P1
+
+
+
+                                                                                            Impact
+
+If this vulnerability is exploited, an attacker can:
+
+Impersonate other users
+Access sensitive user data
+Escalate privileges (user → admin)
+Bypass authentication and authorization controls
+Take full control of accounts
+
+
+
+                                                                                          Remediation
+
+
+Enforce strong JWT signature verification on the server
+Use secure signing algorithms (e.g., RS256, HS256 with strong secret)
+Never accept alg: none
+Do not store sensitive data directly inside JWT claims
+Validate token integrity, expiration, and issuer on every request
+Rotate signing keys regularly
+Implement proper role-based access control (RBAC) on the server side
+
+
+
