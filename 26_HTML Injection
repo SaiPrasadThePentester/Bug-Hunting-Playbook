@@ -1,0 +1,100 @@
+HTML Injection is a type of attack where an attacker injects malicious HTML code into a web page,This occurs when a web application fails to properly validate or sanitize user input and directly embeds that input into the HTML content of the page.
+As a result, the injected HTML is rendered by the victim’s browser, potentially altering the page structure or displaying unauthorized content.
+
+
+
+                                                                                      Types of HTML Injection
+
+
+
+1.Reflected HTML Injection
+Test Scenario: A search box or URL parameter reflects user input directly in the response.
+Example URL:https://example.com/search?q=<h1>HTML-Test</h1>
+
+
+2.Stored HTML Injection
+Test Scenario:A comment, feedback, or profile field where input is saved in a database
+
+
+1.Submit the payload in a persistent input field
+  <b>Stored-HTML</b>
+
+2.Save or submit the form
+
+3.refresh page on browser
+
+4.Revisit the page where the input is displayed
+
+
+
+                                                                           Input Points Vulnerable to HTML Injection
+
+
+Search Bars
+Contact Forms
+Comment Sections
+User Registration Forms
+Login Forms (error messages / username reflection)
+Feedback Forms
+Product Reviews
+Chat Boxes / Messaging Features
+Newsletter Signup Forms
+Profile Information (bio, display name, status)
+Support / Ticket Systems
+Order Notes / Special Instructions
+URL Parameters & Query Strings
+File Metadata Fields (file name, description)
+Survey & Poll Forms
+Referral / Coupon Fields etc...
+
+
+
+
+                                                                                           Payload’s:
+ 
+ LInk:https://github.com/InfoSecWarrior/Offensive-Payloads/blob/main/Html-Injection-Payloads.txt
+
+
+
+
+
+
+                                                                                           CVSS Score
+
+
+▶ Reflected HTML Injection | CVSS v3.1: 4.3 – Low | P4
+   Stored HTML Injection | CVSS v3.1: 5.4 – Medium | P3
+
+
+
+                                                                                           Impact
+
+
+If HTML Injection exists, an attacker may:Alter page appearance (defacement)
+                                          Display fake warnings or messages
+                                          Inject phishing forms
+                                          Mislead users into entering sensitive data
+                                          Damage brand trust and reputation
+                                          Assist further exploitation (XSS chaining)
+
+
+                                           
+                                                                                       Remediation
+
+
+Sanitize all user inputs (server-side validation)
+Encode output based on context (HTML encoding)
+Use secure templating engines (auto-escaping)
+Apply allowlists instead of blocklists
+Avoid rendering raw user input in HTML
+Perform security testing on all input points
+
+✅ Best Practice:
+Encode < > " ' & as: To &lt; &gt; &quot; &#x27; &amp;
+
+
+
+
+
+   
+
