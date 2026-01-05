@@ -1,0 +1,85 @@
+Sensitive data exposure occurs when client-side JavaScript files contain hard-coded secrets or internal information that can be accessed by anyone.
+
+Commonly exposed data includes:
+API keys
+Access tokens
+Secret keys
+Internal API endpoints
+Firebase / AWS / Google keys
+Debug credentials
+Internal IPs or environment details
+
+
+
+                                                                                     Steps To Reproduce
+
+#getjs
+go install github.com/003random/getJS/v2@latest
+sudo cp ~/go/bin/getJS /bin/
+getJS --url https://www.dishtv.in/
+getJS -input urls.txt | grep -i https                                                                                                                                     
+
+#subjs
+wget https://github.com/lc/subjs/releases/download/v1.0.1/subjs_1.0.1_linux_amd64.tar.g
+tar -xf  subjs_1.0.1_linux_amd64.tar.gz
+sudo mv subjs /usr/bin/
+subjs -i urls.txt
+
+#katana
+su
+go install github.com/projectdiscovery/katana/cmd/katana@latest
+sudo cp ~/go/bin/katana /bin/
+sudo katana -u target.in -jc | grep js$
+sudo katana -list urls.txt -jc | grep js$
+
+
+#Secret finder
+git clone https://github.com/m4ll0k/SecretFinder.git secretfinder
+cd secretfinder
+sudo apt install python3-requests-file python3-requests python3-jsbeautifier python3-lxml
+chmod +x SecretFinder.py 
+python3 SecretFinder.py -i javaurl   
+
+
+#mantra
+go install github.com/Brosck/mantra@latest
+sudo cp ~/go/bin/mantra /bin/
+cat javaurl | mantra      
+
+
+
+                                                                                 CVSS Score
+
+
+CVSS v3.1 Base Score: 7.5 – High | P4
+
+
+
+
+
+                                                                                  Impact
+
+
+If sensitive data is exposed in JS files, an attacker may:
+
+Abuse third-party APIs (billing abuse, quota exhaustion)
+Access backend services directly
+Bypass authentication or authorization
+Perform account takeover (in some cases)
+Enumerate internal APIs for further exploitation
+Gain intelligence for chaining attacks
+Cause financial loss and reputation damage
+
+
+                                                                                  Remediation
+
+
+Remove all secrets from client-side JavaScript
+Rotate exposed keys/tokens immediately
+
+
+
+
+
+
+
