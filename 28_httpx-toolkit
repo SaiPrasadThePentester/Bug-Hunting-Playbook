@@ -1,0 +1,9 @@
+httpx-toolkit is a fast HTTP probing tool used to identify which subdomains are alive (responding) and which are not responding by sending HTTP/HTTPS requests.
+
+#sudo apt install httpx-toolkit
+httpx-toolkit -list file.txt -silent -probe > output.txt
+
+
+Help : 
+-list file.txt → Input file containing subdomains list
+
