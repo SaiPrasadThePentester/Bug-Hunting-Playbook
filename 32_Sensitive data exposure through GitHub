@@ -1,0 +1,59 @@
+Sensitive data exposure through GitHub dorking occurs when developers accidentally push confidential information (such as API keys, credentials, tokens, or database URLs) into public GitHub repositories,Attackers use advanced GitHub search queries (dorks) to systematically discover this exposed information.
+
+
+                                                                                    Steps to Reproduce
+
+
+1.Open the GitHub website and log in 
+
+2.Use the GitHub Search Bar
+
+3.In the search bar, enter a targeted dork combining the organization/domain name with a sensitive keyword.
+ Example Search Query: nasa.com "DB_PASSWORD"
+
+
+ 
+                                                            GitHub Dorking Keywords for Identifying Sensitive Data Exposure
+
+
+https://github.com/random-robbie/keywords/blob/master/keywords.txt
+ https://github.com/0xPugazh/Awesome-Dorks/blob/master/github-dorks.txt
+ https://github.com/techgaun/github-dorks/blob/master/github-dorks.txt
+ https://github.com/random-robbie/keywords/blob/master/keywords.txt
+https://github.com/techgaun/github-dorks/blob/master/github-dorks.txt
+https://github.com/coffinxp/payloads/blob/main/github-dork.txt
+
+
+             
+                                                                                  Automatic Tool
+
+https://safe.sur.ly/o/vsec7.github.io/AA000014?pageviewId=mobile-302e3236303934313030203137363436373838363020333031323537333331 
+
+
+
+
+                                                                                  CVSS Score
+
+CVSS v3.1 Base Score: 9.1 – Critical | P1
+
+
+
+                                                                                   Impact
+
+
+If sensitive data is exposed through public GitHub repositories, an attacker can:
+Gain unauthorized access to applications or APIs
+Perform account takeover
+Access or dump databases
+Abuse paid third-party services (billing impact)
+Move laterally into internal infrastructure
+Chain with other vulnerabilities
+Cause financial loss and reputation damage
+
+
+                                                                                  Remediation
+
+
+Revoke and rotate all exposed credentials immediately
+Remove sensitive data from public repositories
+Make affected repositories private (if required)
