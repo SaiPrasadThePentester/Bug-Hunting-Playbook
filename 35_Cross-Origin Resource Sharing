@@ -1,0 +1,25 @@
+CORS is a controlled relaxation of SOP that allows cross-origin access explicitly.
+
+How it works: Uses HTTP response headers sent by the server.
+
+Important Headers
+Access-Control-Allow-Origin
+Access-Control-Allow-Methods
+Access-Control-Allow-Headers
+Access-Control-Allow-Credentials
+
+Example: 
+        Access-Control-Allow-Origin: https://trusted.com
+
+
+➡️ Allows trusted.com to access the resource.
+Common Misconfiguration
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+❌ High-risk misconfiguration
+
+
+
+Security Impact: Data leakage
+                Account takeover (in some cases)
