@@ -1,0 +1,67 @@
+Broken Link Hijacking (BLH) is a security vulnerability where attackers take control of abandoned or broken external links referenced by a website and misuse them to serve malicious content, phishing pages, or SEO spam.
+This occurs when a website links to an external resource (such as a JavaScript file, image, CDN asset, or social media profile) that is no longer active because.
+
+
+
+                                                                  Broken Link Hijacking (Social Media Takeover)
+
+
+
+Scenario:
+         A company previously maintained official social media profiles such as Twitter, Instagram, or LinkedIn and linked them on its website.
+
+
+Later, the company:
+                   Deletes the social media account, or
+                   Changes the username, or
+                   Stops using the platform
+
+However, the website link is not updated or removed.
+
+
+  
+How the Attack Happens :
+
+1️⃣ The website still contains a link like: https://twitter.com/companyname
+
+
+2️⃣ The original social media account is deleted or abandoned
+
+3️⃣ An attacker notices the broken link
+
+4️⃣ The attacker creates a new account using the same username
+
+5️⃣ The website now unknowingly links to the attacker-controlled profile
+
+➡️ Social Media Takeover achieved
+
+
+       
+        
+                                                                                        CVSS Score
+\
+CVSS v3.1 Base Score: 6.5 – Medium | P3 
+
+
+
+
+                                                                                         Impact
+
+If a social media link is hijacked, an attacker can:
+Impersonate the brand using a trusted website link
+Run phishing campaigns and scams
+Spread malicious links or fake announcements
+Mislead customers and partners
+Damage brand reputation and trust
+Cause financial and legal consequences
+
+
+
+                                                                                       Remediation
+
+
+
+Remove broken or unused social media links from the website
+Reclaim the original username if possible
+Report impersonation accounts to the platform
+
