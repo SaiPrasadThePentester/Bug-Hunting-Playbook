@@ -1,0 +1,69 @@
+A Race Condition occurs when an application processes multiple requests simultaneously without proper locking or validation,Attackers can exploit this timing gap to perform unauthorized actions that bypass business logic restrictions.
+
+
+                                                                                              
+                                                                                       Scenario
+
+The application allows free users to create only 3 email (Gmail) accounts,Due to improper handling of concurrent requests, this limit can be bypassed by sending multiple requests at the same time
+
+
+                                                                         
+                                                                              Practical Exploitation (Using Burp Suite)
+
+
+
+1.Log in to the application as a free user.
+2.Attempt to create a new email account.
+3.Intercept the account creation request using Burp Suite Proxy.
+4.Send the intercepted request to Burp Repeater.
+5.Copy the same request multiple times.
+6.Modify the email ID in each copied request.
+
+
+                                                                         
+                                                                          Group Creation & Parallel Sending
+
+
+1.Create a new tab group in Burp Repeater,Add all modified requests to the same group.
+ Click Send → Send group in parallel
+ (Single-packet / concurrent request attack)
+
+📌 If the server processes all requests simultaneously without enforcing limits, more than 3 email accounts are created, confirming a race condition vulnerability.
+
+
+
+                                                                                  
+                                                                                    CVSS
+
+
+CVSS v3.x: 7.0 – 8.6
+Severity: High
+Priority: P2
+
+
+
+
+                                                                                    Impact
+
+
+If exploited, an attacker can:
+Bypass usage limits or quotas
+Abuse free-tier restrictions
+Create unlimited resources
+Cause financial or service abuse
+Break core business logic
+Impact system integrity and fairness
+
+
+
+                                                                                  Remediation
+
+
+Implement server-side locking / synchronization
+Use atomic operations for sensitive actions
+Enforce limits at the database level
+Apply rate limiting and request throttling
+Validate state before and after processing requests
+Use unique constraints and transactional controls
+
+
