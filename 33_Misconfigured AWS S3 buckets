@@ -1,0 +1,94 @@
+Misconfigured AWS S3 buckets occur when access controls are improperly set, allowing public read/write access or excessive permissions,This can expose sensitive data or allow attackers to upload malicious files.
+
+
+ 
+                                                                   Common Google Dorks To Find S3 Buckets
+
+
+site:http://s3.amazonaws.com intitle:index.of.bucket
+site:http://amazonaws.com inurl:".s3.amazonaws.com/"
+site:.s3.amazonaws.com "Company"
+intitle:index.of.bucket
+site:http://s3.amazonaws.com intitle:Bucket loading
+site:*.amazonaws.com inurl:index.html
+subfinder -d eduplusnow.com -all -silent | httpx-toolkit -sc -title -td | grep "Amazon S3"
+site:*.s3.amazonaws.com OR site:*.s3-external-1.amazonaws.com OR site:*.s3.dualstack.us-east-1.amazonaws.com OR site:*.s3.ap-south-1.amazonaws.com) "target.com"
+site:s3.amazonaws.com "target.com"
+site:*.s3.amazonaws.com "target.com"
+site:s3-external-1.amazonaws.com "target.com"
+site:s3.dualstack.us-east-1.amazonaws.com "target.com"
+site:amazonaws.com inurl:s3.amazonaws.com 
+site:s3.amazonaws.com intitle:"index of"  
+site:s3.amazonaws.com inurl:".s3.amazonaws.com/"  
+site:s3.amazonaws.com intitle:"index of" "bucket"
+
+https://buckets.grayhatwarfare.com/
+
+
+
+
+                                                              
+                                                              
+                                                                       Access Bucket via Browser (Public Read Check)
+
+
+Example : https://bucketname.s3.amazonaws.com/
+
+
+
+Vulnerable If: Bucket contents are listed
+               Files open or download without authentication
+
+➡️ Indicates public read access
+
+
+
+
+                                                                                       Tool
+
+
+#sudo apt install awscli
+aws s3 ls s3://bucketname --no-sign-request { List Files in a Public S3 Bucket } 
+aws s3 cp s3://bucketname/filename /home/saijain --no-sign-request { Download File from Public S3 Bucket }
+
+
+
+                                                                                      CVSS Score
+
+▶ Public Read Access : CVSS v3.1 Base Score: 7.5 – High
+Public Write / Delete Access : CVSS v3.1 Base Score: 9.1 – Critical
+
+
+
+
+
+                                                                                           Impact
+
+If an AWS S3 bucket is misconfigured, an attacker can:
+Download sensitive data (PII, backups, logs)
+Access source code or credentials
+Upload malicious files
+Delete or modify existing data
+Host phishing or malware content
+Cause financial loss
+Trigger compliance violations
+Damage brand reputation
+
+
+                                                                                       Remediation
+
+
+Enable S3 Block Public Access
+Remove public ACLs and bucket policies
+Revoke exposed object permissions
+Rotate exposed credentials (if any)
+
+
+
+
+
+
+
+
+
+
