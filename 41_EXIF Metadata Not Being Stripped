@@ -93,24 +93,3 @@ Pillow (Python)
 Sharp (Node.js)
 Do not rely on client-side stripping
 Verify uploaded images contain no metadata before storage or display
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                           
-is still present,
