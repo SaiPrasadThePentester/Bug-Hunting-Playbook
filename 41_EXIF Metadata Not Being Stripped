@@ -1,0 +1,116 @@
+EXIF Metadata Not Being Stripped is a security and privacy issue where an application allows users to upload images without removing embedded EXIF metadata.
+
+
+EXIF (Exchangeable Image File Format) metadata may contain sensitive information such as: GPS location (latitude & longitude)
+                                                                                           Device make and model
+                                                                                           Date and time the photo was taken
+                                                                                           Camera serial numbers
+                                                                                          Software used to edit the image
+                                                                                          If this metadata is publicly accessible, it can lead to information disclosure and privacy risks.
+
+
+
+
+                                                                                         
+                                                                                  Steps to Reproduce 
+
+
+
+
+
+1.Download any image from a public source (https://github.com/ianare/exif-samples/tree/master/jpg).
+
+
+2.Log in to the target application.
+
+
+3.Upload the image as a profile picture or in any image upload field.
+
+
+4.After uploading, click on the profile picture (or uploaded image).
+
+
+5.Copy the Image URL
+
+
+6.Check EXIF Metadata
+Open the copied image URL in an EXIF viewer tool.
+
+
+#Tools:
+https://metadataview.com/
+https://exifmeta.com/#google_vignette
+https://exifdataview.com/
+https://ezgif.com/view-metadata/ezgif-138104c5be5f19de.jpg.html
+
+
+7.Confirm the Vulnerability
+If EXIF metadata such as: GPS location
+                           Device model
+                           Date/time
+                           Camera information
+
+
+     
+     
+                                                                                         CVSS Score
+
+
+
+
+▶ General EXIF Information Exposure
+CVSS v3.1 Base Score: 4.3 – Low | P4
+
+
+▶ If GPS / Precise Location Data Is Exposed
+CVSS v3.1 Base Score: 5.3 – Medium | P3
+
+
+
+
+                                                                                         Impact
+
+
+If EXIF metadata is not removed from uploaded images, an attacker can:
+Extract GPS coordinates (exact location)
+Identify where and when photos were taken
+Reveal device make and model
+Perform OSINT and user profiling
+Track employees or users
+Cause privacy and compliance issues
+
+
+
+                                                                                        Remediation
+
+
+
+Strip EXIF metadata server-side for all image uploads
+Re-encode images after upload
+Use secure image-processing libraries:
+ImageMagick
+Pillow (Python)
+Sharp (Node.js)
+Do not rely on client-side stripping
+Verify uploaded images contain no metadata before storage or display
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           
+is still present,
