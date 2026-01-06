@@ -1,0 +1,57 @@
+The application improperly handles Google OAuth account linking after an email address change.
+Even after a user changes and verifies a new email address, the system continues to associate the account with the old OAuth email.
+As a result, logging in via Google OAuth using the old email address still grants access to the account, even though the account’s primary email has been updated.
+This leads to unauthorized account access and potential account takeover.
+
+
+                                                                             
+                                                                                 Steps to Reproduce
+
+
+
+1.Log in to the application using Google OAuth with: a@gmail.com
+2.Navigate to Account Settings
+3.Change the account email from: a@gmail.com → b@gmail.com
+4.Complete the email verification process by clicking the verification link sent to b@gmail.com.
+5.Log out of the application.
+6.Attempt to log in again using Google OAuth with the old email: a@gmail.com
+
+
+Observe the result: Login is successful.
+The session is granted access to the account now associated with b@gmail.com.
+
+➡️ This confirms improper OAuth identity validation.
+
+
+                                                               
+                                                                                   CVSS Score
+
+
+CVSS v3.1 Base Score: 8.1 – High | P2
+
+
+                                                                                    Impact
+
+
+An attacker can: Retain access via an old OAuth identity
+                Bypass email ownership changes
+               Gain unauthorized access to user accounts
+               Take over accounts without password knowledge
+               Persist access even after user attempts to secure the account
+               Abuse third-party OAuth trust relationships
+
+             
+               
+               
+                                                                                  Remediation
+
+
+Bind OAuth accounts using a stable provider ID (e.g., Google sub claim), not email alone
+Invalidate or re-verify OAuth sessions after email changes
+Require users to re-link OAuth providers when changing email
+
+Enforce consistency checks between: OAuth identity
+                                    Account email
+
+Log and monitor OAuth relinking events
+Notify users when OAuth identities are used to log in
