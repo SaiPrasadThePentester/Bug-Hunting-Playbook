@@ -1,0 +1,107 @@
+Host Header Injection is a security vulnerability where an attacker manipulates the Host header in an HTTP request to inject arbitrary or attacker-controlled values.
+
+
+The Host header tells the web server which domain the client is requesting, and many applications trust this header to: Generate absolute URLs
+                                                                                                                         Perform redirects
+                                                                                                                        Build password reset links
+                                                                                                                        Route requests internally
+                                                                                                                        
+If the application does not properly validate or restrict the Host header, an attacker can exploit this trust.
+
+
+
+
+
+                                                                                     Steps to Reproduce 
+
+
+
+1.Visit the Target Website
+Open the target application in a browser.
+
+
+2.Capture the Request Using Burp Suite
+Configure the browser to use Burp Suite Proxy.
+Navigate to any page of the application.
+Intercept the HTTP request in Burp Suite.
+
+
+3.Modify the Host Header ,Send It
+
+1.X-Forwaded-Host:bing.com { add below host field }
+
+2.HOST:bing.com
+X-Forwaded-Host:original domain name { add below host field }
+
+3.HOST:original domain name
+Referer:bing.com { add below host field }
+
+4.HOST:bing.com
+Referer:bing.com
+
+
+4.Confirm the Vulnerability
+Search the response for the injected keyword (e.g., bing). If it appears, the application is vulnerable.
+
+ 
+ 
+                                                             
+                                                                                         CVSS Score
+
+
+
+
+▶Basic Host Header Reflection / Trust Issue
+CVSS v3.1 Base Score: 6.1 – Medium
+
+▶ Advanced Impact (Password Reset Poisoning / Cache Poisoning / SSRF)
+ CVSS v3.1 Base Score: 8.2 – High
+
+
+
+                                                                                         Impact
+
+
+If Host Header Injection exists, an attacker can:
+Perform open redirect attacks
+Poison web caches
+Manipulate password reset links
+Conduct phishing attacks
+Inject content leading to XSS
+Trigger SSRF via backend services
+Abuse trusted domains and damage reputation
+
+
+
+
+                                                                                      Remediation
+
+
+
+
+Do not trust the Host header directly
+Enforce a strict allowlist of valid domains
+Use server-side configuration for canonical hostnames
+Reject or normalize unexpected Host values
+Avoid using Host header to build: URLs
+                                  Password reset links
+Prefer hardcoded base URLs in application logic
+Configure reverse proxies correctly (e.g., Nginx, Apache)
+Log and monitor invalid Host header usage
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                        
+                                                                                                                        
+
+                                                                                                                        
