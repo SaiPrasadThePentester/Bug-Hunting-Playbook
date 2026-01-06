@@ -1,0 +1,65 @@
+The application enforces username uniqueness checks without proper normalization.
+While registering the username admin correctly returns an error stating that the username is already taken, the same restriction can be bypassed by adding leading and/or trailing whitespace characters.
+As a result, usernames such as " admin", "admin ", or " admin " are accepted as new, distinct accounts.
+This allows attackers to create admin-like or trusted-looking usernames, enabling impersonation and social-engineering attacks.
+
+
+
+                                                                        
+                                                                         
+                                                                                Steps to Reproduce
+
+
+
+
+1.Navigate to the user registration page.
+
+2.Attempt to register with the username: admin
+
+3.Observe the expected error: This username is already taken.
+
+4.Now try registering with one of the following usernames:
+" admin"
+"admin "
+" admin "
+
+5.Submit the registration form.
+
+6.Observe that the account is successfully created.
+
+➡️ This confirms a username uniqueness bypass via whitespace manipulation.
+
+
+
+
+
+                                                                                     CVSS Score
+
+
+CVSS v3.1 Base Score: 4.6 – Low | P4
+
+
+                                                                                       Impact
+
+
+
+An attacker can: Impersonate admin-like or trusted users
+                  Mislead users via messages or posts
+                 Send phishing or malicious links
+                  Abuse social trust within the platform
+                   Damage brand reputation
+                    Enable social-engineering attacks
+
+
+     
+     
+                                                                                        Remediation
+
+Normalize usernames before validation:
+Trim leading/trailing whitespace
+Convert to a canonical form
+Enforce uniqueness checks on the normalized value
+Block usernames that visually impersonate: admin,support,moderator
+Apply validation server-side
+Audit existing usernames and clean duplicates
+Consider case-insensitive uniqueness enforcement
