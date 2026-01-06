@@ -1,0 +1,150 @@
+XXE (XML External Entity) is a security vulnerability that occurs when a web application parses XML input insecurely and allows the processing of external entities.
+
+If external entities are enabled, an attacker can inject malicious XML payloads to make the server: Read local files
+                                                                                                    Perform server-side requests
+                                                                                                    Leak sensitive data
+                                                                                                    Cause denial of service
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                
+                                                                                
+                                                                                 
+                                                                                 
+                                                                                 Types of XXE Vulnerabilities
+
+ 
+
+ 1️⃣ Classic XXE (In-Band XXE)
+Description: The attacker injects an external entity and the server directly returns the result in the HTTP response.
+
+What it allows : Reading local files
+                   Returning file contents in the response
+
+Example impact: /etc/passwd disclosure
+              Configuration file leakage
+
+
+
+2️⃣ Blind XXE
+Description: The injected entity is not reflected in the response, but the server still processes it.
+
+What it allows: Triggering server-side requests
+                Exfiltrating data out-of-band (OOB)
+
+Common technique:Server makes a request to attacker-controlled server
+
+
+3️⃣Out-of-Band (OOB) XXE
+Description:Data is extracted via external interactions, not in the normal response.
+
+What it allows > Exfiltration using:HTTP
+                                  DNS
+Common use:When responses are sanitized or hidden
+
+
+
+ 
+                                                                                        Steps to Reproduce
+
+
+https://dishtv.in/xml/example.php?xml=%3C%3Fxml%20version%3D%221.0%22%3F%3E%3C!DOCTYPE%20test%20[%3C!ENTITY%20xxe%20SYSTEM%20%22file%3A///etc/hostname%22%3E]%3E%3Ctest%3E%26xxe%3B%3C/test%3E
+
+
+
+Encoded This So  : <?xml version="1.0"?>
+<!DOCTYPE test [
+  <!ENTITY xxe SYSTEM "file:///etc/hostname">
+]>
+<test>&xxe;</test>
+
+
+Observe the Response:
+✅ Vulnerable If:Response contains:
+                  Hostname
+                 File content
+                 Unexpected server data
+
+
+                 
+                 
+                                                                                      XXE via File Upload
+
+1.Navigate to File Upload Functionality any website 
+
+
+2.Prepare a Malicious XML File
+Example XML file:
+
+<!DOCTYPE test [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+]>
+<test>&xxe;</test>
+
+
+3.Upload the XML File
+
+
+4.Server Processes the XML
+The backend parses the uploaded XML file.
+
+
+5.Observe the Application Response
+Check the response page, error message, or processed output.
+
+
+6.Confirm the Vulnerability
+If the response contains: Contents of /etc/passwd, or
+                          Any unexpected server file data,
+
+➜ The application is vulnerable to XML External Entity (XXE).
+
+
+                                                                     
+                                                                                  CVSS Score
+
+
+
+▶ Classic XXE (Local File Read / In-Band)
+CVSS v3.1 Base Score: 8.2 – High
+
+
+▶Blind / OOB XXE or XXE → SSRF
+CVSS v3.1 Base Score: 9.1 – Critical
+
+
+
+                                                                                  Impact
+
+
+If XXE exists in file upload functionality, an attacker can:
+Read sensitive server files (e.g., configs, secrets)
+Extract environment variables and credentials
+Perform Server-Side Request Forgery (SSRF)
+Access internal services or cloud metadata
+Exfiltrate data out-of-band (DNS/HTTP)
+Cause Denial of Service via entity expansion
+Gain intelligence for further compromise
+
+
+
+                                                                                Remediation
+
+
+
+Disable external entity processing in XML parsers
+Disallow DTDs entirely
+Use secure parser configurations (e.g., defused XML)
+Validate file types and content (do not trust extensions)
+Parse XML using least-privileged file access
+Prefer JSON over XML when possible
+Keep XML libraries and frameworks up to date
+Apply network egress controls to limit SSRF impact
+
+
+
+
+
+
+
+High                                                                             
