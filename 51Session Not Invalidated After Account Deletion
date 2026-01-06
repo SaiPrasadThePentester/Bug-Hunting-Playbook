@@ -1,0 +1,77 @@
+The application does not properly invalidate active user sessions after an account is deleted or deactivated.
+As a result, previously authenticated sessions remain valid and allow continued access to the application even though the account no longer exists.
+This allows attackers with an existing session to maintain unauthorized access after account deletion.
+
+
+
+                                                                                    Steps to Reproduce
+
+
+
+
+1.Open Browser A (e.g., Chrome)
+Navigate to the target application.
+Log in using valid user credentials.
+
+
+2.Open Browser B (e.g., Firefox / Incognito)
+Navigate to the same application.
+Log in using the same account credentials.
+Confirm both sessions are active and working.
+
+
+3.In Browser A
+Go to Account Settings.
+Select Deactivate Account or Delete Account.
+Confirm the account deletion.
+
+
+4.Return to Browser B
+Attempt any authenticated actions:
+Visit dashboard or profile
+Access sensitive data (messages, settings, orders)
+Perform API requests or submit forms
+
+
+5.Observe the Behavior
+The session in Browser B remains active and continues to function.
+
+
+
+  
+                                                                                                CVSS Score
+
+
+CVSS v3.1 Base Score: 7.5 – High | P2
+
+
+
+                                                                                                  Impact
+
+
+
+An attacker can: Continue using an active session even after the account is deleted
+                 Access sensitive user information
+                   Perform unauthorized actions
+                    Maintain persistence using stolen or hijacked sessions
+                     Bypass account lifecycle security controls
+                    Cause privacy, compliance, and business impact
+
+
+
+                                                                                                  Remediation
+
+
+
+Invalidate all active sessions immediately after account deletion or deactivation
+Revoke all session tokens server-side
+Enforce session validation on every authenticated request
+Implement centralized session management
+Log and monitor account deletion and session revocation events
+Notify users when their account is deleted or deactivated
+
+
+
+
+
+➡️ This confirms that sessions are not invalidated after account deletion.
