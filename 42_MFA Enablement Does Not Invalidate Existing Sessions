@@ -1,0 +1,70 @@
+The application allows an already authenticated session to remain active even after Multi-Factor Authentication (MFA/2FA) is enabled on the account from another device.
+After enabling MFA on one device, previously logged-in sessions on other devices are not invalidated or re-verified, allowing sensitive actions such as page access or password changes without completing MFA verification.
+This behavior weakens the security guarantees of MFA and may allow attackers with an existing session to continue accessing the account even after MFA is enabled.
+
+
+
+
+                                                                                    Steps to Reproduce
+
+
+
+
+
+1.Identify an Website with MFA / 2FA Support
+2.Create an Account
+3.Log in to the application using valid credentials.
+4.Log In on a Second Device or Browser
+5.Enable MFA on the First Device
+
+6.On Device 2 (existing session):
+Reload the page, or Perform any authenticated action such as: Accessing account pages
+                                                              Changing the password
+                                                               Updating profile information
+
+
+
+Observe the Behavior :
+If the action succeeds without requiring MFA re-authentication,
+➜ the application is vulnerable.
+
+
+
+                                                                                     Priority (P-Level)
+
+P4
+
+
+
+                                                                                          Impact
+
+
+If MFA does not invalidate existing sessions, an attacker who already has access can:
+Bypass MFA protection entirely
+Continue using a compromised session even after MFA is enabled
+Change account password or email
+Access sensitive user data
+Maintain persistence on the account
+Defeat the primary purpose of MFA
+Increase risk of account takeover
+
+
+
+                                                                                       Remediation
+
+
+
+Invalidate all active sessions immediately when MFA/2FA is enabled
+Force re-authentication with MFA on all other devices
+Require MFA for high-risk actions (password, email, security settings)
+Rotate session tokens after MFA enablement
+Implement centralized session management
+Display a list of active sessions and allow users to revoke them
+Log and alert on MFA status changes
+
+
+
+
+
+
+
