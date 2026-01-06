@@ -1,0 +1,26 @@
+                                                            ✅ DAST (Dynamic Application Security Testing) – Line by Line
+
+1. Tests the app/website while it's running live
+2. Used after deployment, on test or staging server
+3. Does not need source code, only a live URL or app
+4. Simulates real-world hacker behavior
+5. Finds runtime vulnerabilities (actual exploits)
+6. Slower than SAST, but more accurate
+7. Best for testers and security analysts
+8. Can’t point to exact line of code causing the issue
+9. Also called black-box testing
+
+
+                                                                       🔐 DAST can detect these attacks
+
+
+✅ SQL Injection (by injecting into forms or URLs)
+✅ XSS (by sending malicious scripts and watching output)
+✅ Broken authentication (brute-force, bypass)
+✅ Security misconfigurations (open ports, debug info)
+✅ Command injection (executes commands on target)
+✅ RCE (checks if arbitrary code can run)
+✅ Sensitive data exposure (checks for HTTPS, cookie leaks)
+✅ File upload flaws (tests if malware upload possible)
+✅ Brute force attacks (tries multiple passwords)
+✅ API security issues (tests actual API behavior)
