@@ -1,0 +1,64 @@
+The application does not properly implement cache-control headers on authenticated pages.
+As a result, sensitive content remains stored in the browser cache and can be accessed using the browser’s Back button even after the user has logged out.
+This behavior may expose sensitive user information, especially on shared or public systems.
+
+
+
+                                                                                    Steps to Reproduce
+
+
+
+1.Log in to the website using valid credentials.
+
+2.After successful login, navigate to any authenticated page (Dashboard, Profile, Account page).
+
+3.Click the Logout option to log out of the application.
+
+4.After logout, click the browser Back button (←).
+
+5.Observe that the browser displays the previous authenticated page content.
+
+
+
+
+
+
+                                                                                             CVSS Score
+
+
+CVSS v3.1 Base Score: 6.1 – Low | P4
+
+
+
+
+                                                                                                 Impact
+
+
+
+An attacker or unauthorized user can: View sensitive user information after logout
+                                      Access cached pages on shared systems
+                                      Perform shoulder-surfing attacks
+                                     Violate user privacy expectations
+                                     Increase risk of data exposure
+
+
+
+                                                                                            
+                                                                                                Remediation
+
+
+
+
+
+Implement proper cache-control headers on all authenticated pages: Cache-Control: no-store, no-cache, must-revalidate, private
+                                                                   Pragma: no-cache
+                                                                   Expires: 0
+
+
+Ensure logout functionality: Invalidates the session server-side
+
+Force revalidation of session on page load
+
+Prevent caching of sensitive pages at: Browser level
+                                       Proxy level
+Test behavior across multiple browsers
