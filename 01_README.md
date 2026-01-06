@@ -12,49 +12,24 @@ Each vulnerability is documented with the following structure:📖 Vulnerability
 
    
     
-                                                                      🧠 Vulnerabilities Included (50+)
+                                                    🧠 Vulnerabilities Included (50+)
 
 
 
 
 🔑 Authentication & Authorization
-Broken Authentication
-Weak Password Policy
-No Rate Limiting (OTP / Login / Reset)
-MFA Bypass (Sessions not invalidated)
-Account Enumeration
-IDOR (Insecure Direct Object Reference)
+Broken Authentication,Weak Password Policy,No Rate Limiting (OTP / Login / Reset),MFA Bypass (Sessions not invalidated),Account Enumeration,IDOR (Insecure Direct Object Reference)
 
 
 🌐 Web Application Vulnerabilities
-Cross-Site Scripting (XSS)
-Reflected
-Stored
-DOM-based
-HTML Injection
-SQL Injection
-Blind SQL Injection
-OS Command Injection
-Server-Side Request Forgery (SSRF)
-XML External Entity (XXE)
-Open Redirect
-Clickjacking
-Host Header Injection
+Cross-Site Scripting (XSS),HTML Injection,SQL Injection,OS Command Injection,Server-Side Request Forgery (SSRF),XML External Entity (XXE),Open Redirect,Clickjacking,Host Header Injection
 
 
 ☁️ Cloud & Infrastructure
-Misconfigured AWS S3 Buckets
-Subdomain Takeover
-Broken Link Hijacking (BLH)
-Sensitive Data Exposure in JS Files
-GitHub Sensitive Data Exposure (GitHub Dorks)
+Misconfigured AWS S3 Buckets,Subdomain Takeover,Broken Link Hijacking (BLH),Sensitive Data Exposure in JS Files,GitHub Sensitive Data Exposure (GitHub Dorks)
 
 
 🔐 Security Misconfigurations
-Missing SPF / DKIM / DMARC
-CORS Misconfiguration
-Weak CSP Policy
-EXIF Metadata Not Stripped
-Directory Listing Enabled
+Missing SPF / DKIM / DMARC,CORS Misconfiguration,Weak CSP Policy,EXIF Metadata Not Stripped,Directory Listing Enabled
 
 …and more.
