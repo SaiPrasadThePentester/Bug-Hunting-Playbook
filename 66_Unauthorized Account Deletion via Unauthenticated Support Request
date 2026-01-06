@@ -1,0 +1,54 @@
+The application’s support process (support form or live chat) allows users to request account deletion without any authentication or identity verification.
+If the support team deletes an account solely based on information submitted through a form or chat, an attacker can impersonate another user and request deletion of their account, leading to unauthorized and irreversible actions.
+
+
+
+                                                                                     Steps to Reproduce
+
+1.Navigate to the company’s support contact form or live chat feature.
+
+2.Submit a request with the following details:
+
+3.Target user’s email address
+
+4.Request message asking for account deletion
+
+5.Do not authenticate as the target user.
+
+6.Do not provide proof of identity.
+
+Observe the support workflow: If the support team processes the request and deletes the account,
+➜ the vulnerability exists.
+
+
+
+                                                                                        CVSS Score
+
+CVSS v3.1 Base Score: 8.2 – High | P2
+
+
+
+
+                                                                                             Impact
+
+
+
+An attacker can: Delete another user’s account without authorization
+                  Cause permanent data loss
+                   Disrupt business operations
+                   Abuse customer support processes
+                   Damage user trust and brand reputation
+                  Create legal and compliance risks
+
+
+
+                                                                                              Remediation
+
+
+
+Require authenticated access for account deletion requests
+Enforce email confirmation to the registered email before deletion
+Implement multi-step verification for destructive actions
+Train support staff on identity verification procedures
+Log and audit all account deletion requests
+Add a cool-off or recovery period before permanent deletion
