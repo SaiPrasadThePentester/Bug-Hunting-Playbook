@@ -61,14 +61,24 @@ No IP-based or account-based lockout
 
 
 
+                                                                      No Rate Limiting – Common Bypass Techniques
+
+
+
+X-Forwarded-For: 127.0.0.1
+X-Forwarded: 127.0.0.1
+X-Forwarded-Host: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+Client-IP: 127.0.0.1
+True-Client-IP: 127.0.0.1
+X-Real-IP: 127.0.0.1
+
                                                                                         CVSS Score
 
 
 
 ▶ OTP / Password Reset / Verification Abuse
 CVSS v3.1 Base Score: 6.5 – Medium
-
-
 
 ▶ API-Level Abuse / Business Logic Impact
 CVSS v3.1 Base Score: 7.5 – High
