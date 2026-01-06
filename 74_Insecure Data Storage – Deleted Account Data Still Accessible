@@ -1,0 +1,45 @@
+The application does not properly remove or restrict access to user-uploaded files after an account is deleted.
+Even after a user deletes their account, previously uploaded profile images remain publicly accessible via their direct URLs.
+This results in orphaned resources that continue to be accessible without authentication, leading to privacy issues and potential data exposure.
+
+
+                                                                                  Steps to Reproduce
+
+Log in to the application with a valid user account.
+Navigate to the Profile section.
+Upload a profile picture.
+Copy the direct URL of the uploaded image.
+Delete the user account.
+Open the copied image URL in a browser (logged out or incognito).
+Observe that the image is still accessible.
+
+➡️ Vulnerability confirmed: file remains accessible after account deletion.
+
+
+
+                                                                                        CVSS Score
+
+CVSS v3.1 Base Score: 5.3 – Medium | P3
+
+
+                                                                                           Impact
+
+
+An attacker or third party can: Access personal images after account deletion
+                                Violate user privacy expectations
+                                Retain access to data users believe is deleted
+                                Cause compliance issues (GDPR, data retention policies)
+                                Harvest or misuse personal content
+
+
+
+                                                                                        Remediation
+
+
+
+Delete all user-uploaded files when an account is deleted
+Revoke access to file URLs immediately after deletion
+Bind uploaded files to user identity and enforce authorization
+Use signed or time-limited URLs for file access
+Periodically clean up orphaned files
+Audit data retention and deletion workflows
